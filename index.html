@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- title on browser tab -->
+    <title>Word Guess Game</title>
+
+    <!-- google fonts api -->
+    <link href="https://fonts.googleapis.com/css?family=Karla&display=swap" rel="stylesheet">
+
+    <!-- css style templates -->
+    <link href="assets/css/reset.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link href="assets/css/style.css" rel="stylesheet">
+    <link href="assets/css/block.css" rel="stylesheet">
+</head>
+
+<body>
+
+    <div class="container-fluid" id="mainContainer">
+        <!--            -->
+        <!-- TITLEBLOCK -->
+        <!--            -->
+        <div class="row text-center" id="titleBlock">
+            <div class="col-md-12">
+                <h1>HANGMAN</h1>
+            </div>
+        </div>
+
+        <div class="row">
+            <!--                     -->
+            <!-- SECRET WORD DISPLAY -->
+            <!--                     -->
+            <div class="col-md-6" id="secretwordDisplay">
+                <h1>SECRET WORD</h1>
+                <h1>_ _ _ _ _</h1>
+            </div>
+
+            <!--            -->
+            <!-- SCOREBOARD -->
+            <!--            -->
+            <div class="col-md-3" id="scoreboard">
+                <h3 id="scoreboardTitle">Scoreboard</h3>
+                <p id="guessCount">Guess Count: 0</p>
+                <p id="guessLimit">Guess Limit: 0</p>
+                <p id="gamesLost">Games Lost: 0</p>
+                <p id="gamesWon">Games Won: 0</p>
+            </div>
+            <div class="col-md-3"></div>
+        </div>
+
+        <!--        -->
+        <!-- FOOTER -->
+        <!--        -->
+        <div class="row" id="footerBar">
+            <div class="col-md-4"></div>
+            <div class="col-md-4">
+                <footer class="py-5 fixed-bottom">
+                    <div class="container">
+                        <p class="m-0 text-center small">Alvaro Luna 2020</p>
+                    </div>
+                </footer>
+            </div>
+            <div class="col-md-4"></div>
+        </div>
+
+        <!-- javascript modules -->
+        <script type="text/javascript" src="assets/javascript/game.js"></script>
+    </div>
+
+</body>
+
+</html>

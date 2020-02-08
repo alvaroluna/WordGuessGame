@@ -1,0 +1,19 @@
+body {
+    font-family: Karla;
+}
+
+#titleBlock {
+    background: grey;
+}
+
+#secretwordDisplay {
+    background: lightgreen;
+}
+
+#scoreboard {
+    background: lightgrey;
+}
+
+#footerBar {
+    background: lightgreen;
+}
