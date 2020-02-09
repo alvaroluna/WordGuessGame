@@ -2,9 +2,9 @@ var gameObj = {
     RandomWord: function () {
         var words = ["cat", "dog", "bird", "rabbit", "rhino"];
         var word = words[Math.floor(Math.random() * words.length)];
-        return word;
+        this.secretWord = word
+        // return word;
     },
-    secretWord: this.RandomWord(),
 
     // guess limit and current count
     guessCount: 0,
@@ -21,3 +21,6 @@ var gameObj = {
     gamesWon: 0,
     gamesLost: 0
 };
+
+var a = gameObj.RandomWord()
+a.secretWord

@@ -2,9 +2,29 @@
 // GAME LOGIC / HELPER FUNCTIONS //
 //                               //
 
+function WriteSecretWordUI(secretWord) {
+    var idStr = "dashedSecretWord";
+    var hiddenCharacter = "_ ";
+    var dashedWord = "";
+
+    for (i = 0; i < secretWord.length; i++) {
+        dashedWord = dashedWord + hiddenCharacter
+    }
+
+    var element = document.getElementById(idStr);
+    element.innerHTML = dashedWord;
+
+    // write dashed
+    return (dashedWord)
+}
+
+function UpdateSecretWordUI() {
+
+}
+
 // CHOOSE RANDOM WORD //
 function RandomWord() {
-    var words = ["cat", "dog", "bird", "rabbit", "rhino"];
+    var words = ["caat", "doog", "biird", "rabbit", "rhiino"];
     var word = words[Math.floor(Math.random() * words.length)]
     return word;
 };
@@ -23,11 +43,11 @@ function IsCharInStr(str, char) {
             if (str[i] === char) charIndices.push(i);
         };
         // return charIndices;
-        return true;
+        return charIndices;
     }
     else {
         return false;
-    };
+    }
 };
 
 // DISPLAY HOW MUCH OF WORD HAS BEEN SOLVED
@@ -37,90 +57,105 @@ function HowMuchOfStringIsGuessed() {
     return foo
 }
 
+// UTILITIES //
+String.prototype.replaceAt = function (index, replacement) {
+    return this.substr(0, index) + replacement + this.substr(index + replacement.length);
+}
+
+// var hello = "Hello World";
+// alert(hello.replaceAt(2, "!!"));
+
 //                       //
 // MAIN / EVENT HANDLERS //
 //                       //
 function Main() {
-    var gameObj = {
-        RandomWord: function () {
-            var words = ["cat", "dog", "bird", "rabbit", "rhino"];
-            var word = words[Math.floor(Math.random() * words.length)];
-            return word;
-        },
-        secretWord: this.RandomWord(),
+    // word to solve
+    var secretWord = RandomWord();
 
-        // guess limit and current count
-        guessCount: 0,
-        guessLimit: (this.secretWord.length * 3),
+    // guess limit and current count
+    var guessCount = 0;
+    var guessLimit = (secretWord.length * 3);
 
-        // "score" variables - to track if word is solved
-        score: 0,
-        scoreToWin: this.secretWord.length,
+    // "score" variables - to track if word is solved
+    var score = 0;
+    var scoreToWin = secretWord.length;
 
-        // game victory/defeat variables
-        youLose: false,
-        youWin: false,
+    // game victory/defeat variables
+    var youLose = false;
+    var youWin = false;
 
-        gamesWon: 0,
-        gamesLost: 0
+    var gamesWon = 0;
+    var gamesLost = 0;
+
+    function ResetGameSettings() {
+        youLose = false;
+        youWin = false;
+        guessCount = 0;
+        unRepeatableLetters = [];
+        secretWord = RandomWord();
+        score = 0;
+        scoreToWin = secretWord.length;
+        WriteSecretWordUI(secretWord);
     }
 
+    // initially set UI
+    var dashedSecretWord = WriteSecretWordUI(secretWord);
+    console.log(dashedSecretWord);
+
     // forever loop - listens for keyboard inputs
+    var unRepeatableLetters = [];
     document.onkeyup = function (event) {
         // do everything below when key is pressed...
         var letter = event.key.toLowerCase();
 
-        var unRepeatableLetters = [];
+        // do not allow a previous correct letter to be selected again.
         if (letter) {
             var charResult = IsCharInStr(secretWord, letter);
             console.log(charResult)
             if (charResult) {
-                // length of list is score
-
-                // can't repeat letters
-
-                // record correctly guessed characters
-
+                // can't repeat letters | record correctly guessed characters
+                for (i = 0; i < charResult.length; i++) {
+                    unRepeatableLetters.push(letter);
+                }
                 // count the number of unique guesses
-                gameObj[guessCount]++;
+                guessCount++;
+
+                // event player wins; unRepeatableLetters ='s secretWord length
+                if (unRepeatableLetters.length === secretWord.length) {
+                    // inform player she/he won
+                    youWin = true;
+                    alert("You Win!");
+
+                    // tally won game score
+                    gamesWon++;
+
+                    // reset stuff
+                    ResetGameSettings()
+                }
             }
             else {
-                gameObj[guessCount]++;
+                guessCount++;
             }
         }
 
-        console.log(secretWord);
-        console.log("guessCount: ", gameObj[guessCount]);
-        // console.log(HowMuchOfStringIsGuessed())
-
         // event player loses; exceeds limits
-        if (gameObj[guessCount] > gameObj[guessLimit]) {
+        if (guessCount > guessLimit) {
             // inform player she/he lost
-            gameObj[youLose] = true;
+            youLose = true;
             alert("You Lose!");
 
             // tally lost game score
-            gameObj[gamesLost]++;
+            gamesLost++;
 
             // reset stuff
-            secretWord = RandomWord();
-            unRepeatableLetters = [];
-            score = 0;
-            scoreToWin = secretWord.length;
-            console.log(secretWord);
+            ResetGameSettings()
         }
 
-        // event player wins; level up? obscure architects?
-        if (youWin === true) {
-            // stuff happens
-
-            // reset stuff
-            secretWord = RandomWord();
-            unRepeatableLetters = [];
-            score = 0;
-            scoreToWin = secretWord.length;
-            console.log(secretWord);
-        }
+        // print tests...
+        console.log(secretWord);
+        console.log("guessCount: ", guessCount);
+        console.log(unRepeatableLetters);
+        console.log(dashedSecretWord);
     }
 };
 
