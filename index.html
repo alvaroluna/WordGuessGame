@@ -8,7 +8,7 @@
     <meta name="author" content="">
 
     <!-- title on browser tab -->
-    <title>Word Guess Game</title>
+    <title>KAHN-MAN</title>
 
     <!-- google fonts api -->
     <link href="https://fonts.googleapis.com/css?family=Karla&display=swap" rel="stylesheet">
@@ -18,49 +18,51 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link href="assets/css/style.css" rel="stylesheet">
-    <link href="assets/css/block.css" rel="stylesheet">
+    <!-- <link href="assets/css/block.css" rel="stylesheet"> -->
 </head>
 
 <body>
 
     <div class="container-fluid" id="mainContainer">
-        <!--            -->
-        <!-- TITLEBLOCK -->
-        <!--            -->
+
         <div class="row text-center" id="titleBlock">
-            <div class="col-md-12">
-                <h1>HANGMAN</h1>
+            <!--            -->
+            <!-- TITLEBLOCK -->
+            <!--            -->
+            <div class="col-md-12" id="title">
+                <img src="assets/images/KAHNMANLogo.png">
             </div>
         </div>
 
         <div class="row">
+            <div class="col-md-2"></div>
             <!--                     -->
             <!-- SECRET WORD DISPLAY -->
             <!--                     -->
-            <div class="col-md-6" id="secretwordDisplay">
+            <div class="col-md-5 text-center" id="secretWordDisplay">
                 <h1>SECRET WORD</h1>
 
                 <!-- this will be written uniquely from js script "_ _ _ _ _ _" -->
                 <h1 id="dashedSecretWord"></h1>
             </div>
-
+            <div class="col-md-1"></div>
             <!--            -->
             <!-- SCOREBOARD -->
             <!--            -->
-            <div class="col-md-3" id="scoreboard">
+            <div class="col-md-2" id="scoreboard">
                 <h3 id="scoreboardTitle">Scoreboard</h3>
                 <p id="guessCount">Guess Count: 0</p>
-                <p id="guessLimit">Guess Limit: 0</p>
+                <p id="guessLimit">Guess Limit: n/a</p>
                 <p id="gamesLost">Games Lost: 0</p>
                 <p id="gamesWon">Games Won: 0</p>
             </div>
-            <div class="col-md-3"></div>
+            <div class="col-md-1"></div>
         </div>
 
-        <!--        -->
-        <!-- FOOTER -->
-        <!--        -->
         <div class="row" id="footerBar">
+            <!--        -->
+            <!-- FOOTER -->
+            <!--        -->
             <div class="col-md-4"></div>
             <div class="col-md-4">
                 <footer class="py-5 fixed-bottom">

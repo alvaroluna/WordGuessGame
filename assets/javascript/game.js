@@ -2,46 +2,67 @@
 // GAME LOGIC / HELPER FUNCTIONS //
 //                               //
 
+// DOM FUNCTIONS
 function WriteSecretWordUI(secretWord) {
     var idStr = "dashedSecretWord";
-    var hiddenCharacter = "_ ";
+    var hiddenCharacter = "_";
     var dashedWord = "";
 
     for (i = 0; i < secretWord.length; i++) {
         dashedWord = dashedWord + hiddenCharacter
     }
 
+    // write dashed to DOM
     var element = document.getElementById(idStr);
     element.innerHTML = dashedWord;
 
-    // write dashed
+    // return dashed string for use; maybe
     return (dashedWord)
-}
+};
 
-function UpdateSecretWordUI() {
+function UpdateSecretWordUI(dashedWord, char, indexList) {
+    var idStr = "dashedSecretWord";
 
-}
+    var dashedWord = dashedWord.split("");
+    for (i = 0; i < indexList.length; i++) {
+        dashedWord[indexList[i]] = char;
+    }
+    dashedWord = dashedWord.join("");
 
-// CHOOSE RANDOM WORD //
+    // write dashed to DOM
+    var element = document.getElementById(idStr);
+    element.innerHTML = dashedWord;
+
+    return dashedWord;
+};
+
+function UpdateHTML_DOM(idStr, text) {
+    var element = document.getElementById(idStr);
+    element.innerHTML = text;
+};
+
+// CHOOSE RANDOM WORD
 function RandomWord() {
-    var words = ["caat", "doog", "biird", "rabbit", "rhiino"];
+    var words = ["salk", "kimbell", "exeter", "jatiya", "yale", "richards",
+        "fisher", "esherick", "fdr", "trenton",];
     var word = words[Math.floor(Math.random() * words.length)]
     return word;
 };
 
-// IS CHARACTER IN STRING? //
+// IS CHARACTER IN STRING?
 function IsCharInStr(str, char) {
     // is character in string?
     var charInStr = str.includes(char);
 
-    // at what index is character in?
     if (charInStr) {
-        // var charIndex = str.indexof(char);
-
+        // at what index is character in?
         var charIndices = [];
         for (var i = 0; i < str.length; i++) {
-            if (str[i] === char) charIndices.push(i);
+            if (str[i] === char) {
+                charIndices.push(i)
+            }
         };
+
         // return charIndices;
         return charIndices;
     }
@@ -50,60 +71,49 @@ function IsCharInStr(str, char) {
     }
 };
 
-// DISPLAY HOW MUCH OF WORD HAS BEEN SOLVED
-function HowMuchOfStringIsGuessed() {
-    // 
-    var foo = (a, b, c) => "The lazy ${a} ${b} over the ${c}"
-    return foo
-}
-
-// UTILITIES //
-String.prototype.replaceAt = function (index, replacement) {
-    return this.substr(0, index) + replacement + this.substr(index + replacement.length);
-}
-
-// var hello = "Hello World";
-// alert(hello.replaceAt(2, "!!"));
-
 //                       //
 // MAIN / EVENT HANDLERS //
 //                       //
 function Main() {
+    function ResetGameSettings() {
+        youLose = false;
+        youWin = false;
+        unRepeatableLetters = [];
+        charDict = {};
+        secretWord = RandomWord();
+        guessCount = 0;
+        guessLimit = (secretWord.length * 2);
+
+        // update DOM
+        UpdateHTML_DOM("guessCount", "Guess Count: " + guessCount);
+        UpdateHTML_DOM("guessLimit", "Guess Limit: " + guessLimit);
+        dashedSecretWord = WriteSecretWordUI(secretWord);
+    };
+
     // word to solve
     var secretWord = RandomWord();
 
     // guess limit and current count
     var guessCount = 0;
-    var guessLimit = (secretWord.length * 3);
+    var guessLimit = (secretWord.length * 2);
+
+    // display guess limit for the current game
+    UpdateHTML_DOM("guessLimit", "Guess Limit: " + guessLimit);
 
     // "score" variables - to track if word is solved
-    var score = 0;
-    var scoreToWin = secretWord.length;
+    var gamesWon = 0;
+    var gamesLost = 0;
 
     // game victory/defeat variables
     var youLose = false;
     var youWin = false;
 
-    var gamesWon = 0;
-    var gamesLost = 0;
-
-    function ResetGameSettings() {
-        youLose = false;
-        youWin = false;
-        guessCount = 0;
-        unRepeatableLetters = [];
-        secretWord = RandomWord();
-        score = 0;
-        scoreToWin = secretWord.length;
-        WriteSecretWordUI(secretWord);
-    }
-
     // initially set UI
     var dashedSecretWord = WriteSecretWordUI(secretWord);
-    console.log(dashedSecretWord);
 
     // forever loop - listens for keyboard inputs
-    var unRepeatableLetters = [];
+    var unRepeatableLetters = []; // THIS IS THE VARIABLE TO VERIFY A WIN!
+    var charDict = {};
     document.onkeyup = function (event) {
         // do everything below when key is pressed...
         var letter = event.key.toLowerCase();
@@ -111,30 +121,40 @@ function Main() {
         // do not allow a previous correct letter to be selected again.
         if (letter) {
             var charResult = IsCharInStr(secretWord, letter);
-            console.log(charResult)
-            if (charResult) {
-                // can't repeat letters | record correctly guessed characters
+            if (charResult && unRepeatableLetters.includes(letter) === false) {
+                // create a dictionary of indices of found characters
+                charDict[letter] = charResult;
+
+                // can't repeat letters | record ALL correct characters 4 WIN!
                 for (i = 0; i < charResult.length; i++) {
                     unRepeatableLetters.push(letter);
                 }
+
                 // count the number of unique guesses
                 guessCount++;
+                UpdateHTML_DOM("guessCount", "Guess Count: " + guessCount);
+
+                // update how much of word has been solved in UI
+                dashedSecretWord = UpdateSecretWordUI(dashedSecretWord, letter, charResult);
 
                 // event player wins; unRepeatableLetters ='s secretWord length
                 if (unRepeatableLetters.length === secretWord.length) {
                     // inform player she/he won
                     youWin = true;
-                    alert("You Win!");
+
+                    setTimeout(function () { alert("You Win!"); }, 500)
 
                     // tally won game score
                     gamesWon++;
+                    UpdateHTML_DOM("gamesWon", "Games Won: " + gamesWon);
 
-                    // reset stuff
-                    ResetGameSettings()
+                    // reset game
+                    setTimeout(ResetGameSettings, 1000);
                 }
             }
             else {
                 guessCount++;
+                UpdateHTML_DOM("guessCount", "Guess Count: " + guessCount);
             }
         }
 
@@ -144,20 +164,29 @@ function Main() {
             youLose = true;
             alert("You Lose!");
 
+            // reset game
+            ResetGameSettings()
+
             // tally lost game score
             gamesLost++;
-
-            // reset stuff
-            ResetGameSettings()
+            UpdateHTML_DOM("gamesLost", "Games Lost: " + gamesLost);
         }
 
-        // print tests...
-        console.log(secretWord);
-        console.log("guessCount: ", guessCount);
-        console.log(unRepeatableLetters);
-        console.log(dashedSecretWord);
+        function Print() {
+            // print tests...
+            console.log(letter);
+            console.log("un-repeatable letters: ", unRepeatableLetters);
+            console.log(charDict)
+            for (var keys in charDict) {
+                console.log(charDict[keys]);
+            }
+            console.log("secret word: " + secretWord);
+            console.log("guessCount: ", guessCount);
+            console.log("dashed secret word: " + dashedSecretWord);
+        }
+        Print()
     }
 };
 
 // program entry point
-Main()
+Main();

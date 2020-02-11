@@ -1,0 +1,21 @@
+body {
+    font-family: Karla;
+    color: white;
+
+    background-image: url(../images/Salk\ Institute.jpg);
+    /* background-repeat: no-repeat; */
+    background-size: cover;
+}
+
+#titleBlock {
+    margin-top: 50px;
+    margin-bottom: 250px;
+}
+
+#scoreboard {
+    outline: 1px dashed white;
+}
+
+#secretWordDisplay {
+    outline: 1px dashed white;
+}
